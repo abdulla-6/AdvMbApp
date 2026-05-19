@@ -11,9 +11,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Animation',
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Animation'),
+          centerTitle: true,
           backgroundColor: Colors.blueAccent,
           foregroundColor: Colors.white,
         ),
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
             const SecondAnimation(),
             const SizedBox(height: 20),
             Divider(thickness: 2, indent: 30, color: Colors.red),
+            const SizedBox(height: 20),
+            const ThirdAnimation(),
           ],
         ),
       ),
@@ -130,6 +134,57 @@ class _SecondAnimationState extends State<SecondAnimation> {
         color: Colors.lightBlueAccent,
         borderRadius: BorderRadius.circular(20),
       ),
+    );
+  }
+}
+
+// ─── Third Animation (Opacity Fade) ────────────────────────────────────────────
+
+class ThirdAnimation extends StatefulWidget {
+  const ThirdAnimation({super.key});
+
+  @override
+  State<ThirdAnimation> createState() => _ThirdAnimationState();
+}
+
+class _ThirdAnimationState extends State<ThirdAnimation> {
+  bool _isVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(
+          children: [
+            AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 500),
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    _isVisible = !_isVisible;
+                  });
+                },
+                child: Text(
+                  _isVisible ? 'Fade Out' : 'Fade In',
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
