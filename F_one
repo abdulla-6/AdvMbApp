@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Animation',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Animation'),
+          backgroundColor: Colors.blueAccent,
+          foregroundColor: Colors.white,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const firstAnimation(),
+            Divider(thickness: 2, endIndent: 30, color: Colors.red),
+            Divider(thickness: 2, endIndent: 30, color: Colors.red, indent: 30),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class firstAnimation extends StatefulWidget {
+  const firstAnimation({super.key});
+
+  @override
+  State<firstAnimation> createState() => _firstAnimationState();
+}
+
+class _firstAnimationState extends State<firstAnimation> {
+  double _initWidth = 120;
+  double _initHeight = 120;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
+          width: _initWidth,
+          height: _initHeight,
+          decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: TextButton(
+            onPressed: () {
+              setState(() {
+                _initWidth = _initWidth >= 320.0 ? 120.0 : _initWidth += 50;
+              });
+            },
+            child: Text(
+              "Botttom Width: ${_initWidth}",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
