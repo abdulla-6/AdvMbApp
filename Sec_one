@@ -1,190 +1,67 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: AnimatedCrossFadeApp(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AnimatedCrossFadeApp extends StatelessWidget {
+  const AnimatedCrossFadeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Animation',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Animation'),
-          centerTitle: true,
-          backgroundColor: Colors.blueAccent,
-          foregroundColor: Colors.white,
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const firstAnimation(),
-            Divider(thickness: 2, endIndent: 30, color: Colors.red),
-            const SizedBox(height: 20),
-            const SecondAnimation(),
-            const SizedBox(height: 20),
-            Divider(thickness: 2, indent: 30, color: Colors.red),
-            const SizedBox(height: 20),
-            const ThirdAnimation(),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Animation"),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body: const Center(
+        child: ImageAnimatee(),
       ),
     );
   }
 }
 
-// ─── First Animation ───────────────────────────────────────────────────────────
-
-class firstAnimation extends StatefulWidget {
-  const firstAnimation({super.key});
+class ImageAnimatee extends StatefulWidget {
+  const ImageAnimatee({super.key});
 
   @override
-  State<firstAnimation> createState() => _firstAnimationState();
+  State<ImageAnimatee> createState() => _ImageAnimateeState();
 }
 
-class _firstAnimationState extends State<firstAnimation> {
-  double _initWidth = 120;
-  double _initHeight = 120;
+class _ImageAnimateeState extends State<ImageAnimatee> {
+  bool _selected = false;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          width: _initWidth,
-          height: _initHeight,
-          decoration: BoxDecoration(
-            color: Colors.blueAccent,
-            borderRadius: BorderRadius.circular(20),
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 500,
+            color: Colors.blue.shade100,
+            child: AnimatedAlign(
+              alignment: _selected ? Alignment.topCenter : Alignment.bottomCenter,
+              duration: const Duration(seconds: 1),
+              child: const FlutterLogo(
+                size: 200,
+              ),
+            ),
           ),
-          child: TextButton(
+          ElevatedButton(
             onPressed: () {
               setState(() {
-                _initWidth = _initWidth >= 320.0 ? 120.0 : _initWidth += 50;
+                _selected = !_selected;
               });
             },
-            child: Text(
-              "Botttom Width: $_initWidth",
-              style: const TextStyle(color: Colors.white),
-            ),
+            child: const Text("Move"),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-// ─── Second Animation ──────────────────────────────────────────────────────────
-
-class SecondAnimation extends StatefulWidget {
-  const SecondAnimation({super.key});
-
-  @override
-  State<SecondAnimation> createState() => _SecondAnimationState();
-}
-
-class _SecondAnimationState extends State<SecondAnimation> {
-  bool _crossFadeStateShowFirst = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            AnimatedCrossFade(
-              firstChild: _buildContainer(120),
-              secondChild: _buildContainer(220),
-              crossFadeState: _crossFadeStateShowFirst
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              duration: const Duration(milliseconds: 300),
-            ),
-            Positioned.fill(
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    _crossFadeStateShowFirst = !_crossFadeStateShowFirst;
-                  });
-                },
-                child: const Text(
-                  'Sized Changer',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildContainer(double size) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: Colors.lightBlueAccent,
-        borderRadius: BorderRadius.circular(20),
+        ],
       ),
-    );
-  }
-}
-
-// ─── Third Animation (Opacity Fade) ────────────────────────────────────────────
-
-class ThirdAnimation extends StatefulWidget {
-  const ThirdAnimation({super.key});
-
-  @override
-  State<ThirdAnimation> createState() => _ThirdAnimationState();
-}
-
-class _ThirdAnimationState extends State<ThirdAnimation> {
-  bool _isVisible = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            AnimatedOpacity(
-              opacity: _isVisible ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isVisible = !_isVisible;
-                  });
-                },
-                child: Text(
-                  _isVisible ? 'Fade Out' : 'Fade In',
-                  style: const TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
