@@ -22,9 +22,10 @@ class MyApp extends StatelessWidget {
           children: [
             const firstAnimation(),
             Divider(thickness: 2, endIndent: 30, color: Colors.red),
-            Divider(thickness: 2, endIndent: 30, color: Colors.red, indent: 30),
             const SizedBox(height: 20),
             const SecondAnimation(),
+            const SizedBox(height: 20),
+            Divider(thickness: 2, indent: 30, color: Colors.red),
           ],
         ),
       ),
