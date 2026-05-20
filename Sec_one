@@ -16,22 +16,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Main Page"),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
+      appBar: AppBar(title: const Text("Main Page")),
       body: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -39,11 +30,15 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(builder: (context) => const DetailClass()),
           );
         },
-        // The tag here must match the tag in DetailClass
-        child: const Center(
-          child: Hero(
-            tag: 'flutter-logo-hero', 
-            child: FlutterLogo(size: 200),
+        // Using Align with Alignment.topLeft places it at the top left
+        child: const Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Hero(
+              tag: 'hero-tag',
+              child: FlutterLogo(size: 100),
+            ),
           ),
         ),
       ),
@@ -58,13 +53,11 @@ class DetailClass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onTap: () => Navigator.pop(context),
+        // Using Center places it in the middle of the screen
         child: const Center(
-          // The tag must be identical to the one in HomePage
           child: Hero(
-            tag: 'flutter-logo-hero', 
+            tag: 'hero-tag',
             child: FlutterLogo(size: 200),
           ),
         ),
