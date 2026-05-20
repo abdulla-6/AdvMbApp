@@ -1,68 +1,74 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AnimatedRotationApp(),
-  ));
+  runApp(const MyApp());
 }
 
-class AnimatedRotationApp extends StatelessWidget {
-  const AnimatedRotationApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Demo 3"),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
-      body: const ImageAnimatee(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
     );
   }
 }
 
-class ImageAnimatee extends StatefulWidget {
-  const ImageAnimatee({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<ImageAnimatee> createState() => _ImageAnimateeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _ImageAnimateeState extends State<ImageAnimatee> {
-  double _turns = 0.0;
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Main Page"),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DetailClass()),
+          );
+        },
+        // The tag here must match the tag in DetailClass
+        child: const Center(
+          child: Hero(
+            tag: 'flutter-logo-hero', 
+            child: FlutterLogo(size: 200),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailClass extends StatelessWidget {
+  const DetailClass({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AnimatedRotation(
-          turns: _turns,
-          duration: const Duration(milliseconds: 300),
-          child: const FlutterLogo(size: 200),
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: const Center(
+          // The tag must be identical to the one in HomePage
+          child: Hero(
+            tag: 'flutter-logo-hero', 
+            child: FlutterLogo(size: 200),
+          ),
         ),
-        const SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                setState(() => _turns -= 0.25); // Rotate Left
-              },
-              child: const Text("Rotate Left"),
-            ),
-            const SizedBox(width: 20),
-            ElevatedButton(
-              onPressed: () {
-                setState(() => _turns += 0.25); // Rotate Right
-              },
-              child: const Text("Rotate Right"),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }
