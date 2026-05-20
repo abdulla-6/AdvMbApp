@@ -44,21 +44,25 @@ class _ImageAnimateeState extends State<ImageAnimatee> {
             width: double.infinity,
             height: 500,
             color: Colors.blue.shade100,
-            child: AnimatedAlign(
-              alignment: _selected ? Alignment.topCenter : Alignment.bottomCenter,
-              duration: const Duration(seconds: 1),
-              child: const FlutterLogo(
-                size: 200,
+            child: Center(
+              child: AnimatedRotation(
+                // Rotates 1 full turn (360 degrees) when selected, 0 when not
+                turns: _selected ? 1 : 0,
+                duration: const Duration(seconds: 1),
+                child: const FlutterLogo(
+                  size: 200,
+                ),
               ),
             ),
           ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               setState(() {
                 _selected = !_selected;
               });
             },
-            child: const Text("Move"),
+            child: const Text("Rotate"),
           ),
         ],
       ),
