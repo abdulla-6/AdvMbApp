@@ -1,32 +1,14 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(home: HomePage()));
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: AnimatedRotationApp(),
+  ));
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  // We use a counter for 90-degree turns. 
-  // 1.0 represents a full 360-degree rotation.
-  double _turns = 0.0;
-
-  void _rotateLeft() {
-    setState(() {
-      _turns -= 0.25; // Subtract 90 degrees
-    });
-  }
-
-  void _rotateRight() {
-    setState(() {
-      _turns += 0.25; // Add 90 degrees
-    });
-  }
+class AnimatedRotationApp extends StatelessWidget {
+  const AnimatedRotationApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,34 +18,51 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      body: Center(
-        child: Column(
+      body: const ImageAnimatee(),
+    );
+  }
+}
+
+class ImageAnimatee extends StatefulWidget {
+  const ImageAnimatee({super.key});
+
+  @override
+  State<ImageAnimatee> createState() => _ImageAnimateeState();
+}
+
+class _ImageAnimateeState extends State<ImageAnimatee> {
+  double _turns = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedRotation(
+          turns: _turns,
+          duration: const Duration(milliseconds: 300),
+          child: const FlutterLogo(size: 200),
+        ),
+        const SizedBox(height: 50),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // AnimatedRotation handles the smooth transition automatically
-            AnimatedRotation(
-              turns: _turns,
-              duration: const Duration(milliseconds: 300),
-              child: const FlutterLogo(size: 200),
+            ElevatedButton(
+              onPressed: () {
+                setState(() => _turns -= 0.25); // Rotate Left
+              },
+              child: const Text("Rotate Left"),
             ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _rotateLeft,
-                  child: const Text('Rotate Left'),
-                ),
-                const SizedBox(width: 30),
-                ElevatedButton(
-                  onPressed: _rotateRight,
-                  child: const Text('Rotate Right'),
-                ),
-              ],
+            const SizedBox(width: 20),
+            ElevatedButton(
+              onPressed: () {
+                setState(() => _turns += 0.25); // Rotate Right
+              },
+              child: const Text("Rotate Right"),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }
