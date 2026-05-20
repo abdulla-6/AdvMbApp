@@ -30,15 +30,12 @@ class HomePage extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const DetailClass()),
           );
         },
-        // Aligns the Hero widget to the top left of the screen
+        // Aligns the Hero widget strictly to the top-left of the available space
         child: const Align(
           alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Hero(
-              tag: 'hero-logo',
-              child: FlutterLogo(size: 80),
-            ),
+          child: Hero(
+            tag: 'hero-logo',
+            child: FlutterLogo(size: 80),
           ),
         ),
       ),
